@@ -29,19 +29,9 @@
     // Override point for customization after application launch.
     
     [[RJBookData sharedRJBookData] loadXml:@"book.xml"];
-
-    //RJBookListViewController *bookListViewController = [[[RJBookListViewController alloc] initWithNibName:@"RJBookListViewController_iPhone" bundle:nil] autorelease];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-    {
-        RJBookListViewController *bookListViewController = [[[RJBookListViewController alloc] initWithNibName:@"RJBookListViewController_iPhone" bundle:nil] autorelease];
-        self.navigationController = [[[UINavigationController alloc] initWithRootViewController:bookListViewController] autorelease];
-    }
-    else
-    {
-        RJBookListViewController *bookListViewController = [[[RJBookListViewController alloc] initWithNibName:@"RJBookListViewController_iPad" bundle:nil] autorelease];
-        self.navigationController = [[[UINavigationController alloc] initWithRootViewController:bookListViewController] autorelease];
-    }
-   // self.navigationController = [[[UINavigationController alloc] initWithRootViewController:bookListViewController] autorelease];
+   
+    RJBookListViewController *bookListViewController = [[[RJBookListViewController alloc]init]autorelease];
+    self.navigationController = [[UINavigationController alloc]initWithRootViewController:bookListViewController];
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
     return YES;

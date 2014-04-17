@@ -224,7 +224,7 @@
 		[handle seekToFileOffset:index];
 		index = [self indexOfPage:handle textFont:textFont];
 		[pageIndexArray addObject:[NSNumber numberWithUnsignedLongLong:index]];
-		NSLog(@"--index:%d",index);
+		NSLog(@"--index:%llu",index);
 	}
 	[self bookDidRead:[pageIndexArray count]];
 	[pool release];

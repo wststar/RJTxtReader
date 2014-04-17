@@ -12,8 +12,7 @@
 	animation.duration = 0.4f;
 	animation.delegate = self;
 	animation.timingFunction = UIViewAnimationCurveEaseInOut;
-	animation.type = kCATransitionPush;
-	//animation.subtype = kCATransitionFromLeft;
+	animation.type = kCATransitionMoveIn;
     switch (2+add) {
         case 0:
             animation.subtype = kCATransitionFromTop;
@@ -31,30 +30,6 @@
             break;
     }
     [[bookLabel layer] addAnimation:animation forKey:nil];
-    return;
-    
-	[UIView beginAnimations:@"animationID" context:nil];
-	[UIView setAnimationDuration:1.3f];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView setAnimationRepeatAutoreverses:NO];
-	switch (2+add) {
-		case 0:
-			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:bookLabel cache:YES];//oglFlip, fromLeft 
-			break;
-		case 1:
-			[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:bookLabel cache:YES];//oglFlip, fromRight 	 
-			break;
-		case 2:
-			[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:bookLabel cache:YES];
-			break;
-		case 3:
-			[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:bookLabel cache:YES];
-			break;
-		default:
-			break;
-	}
-    
-	[UIView commitAnimations];
 }
 
 -(void) savePlace:(NSUInteger) nPage
@@ -145,7 +120,7 @@
     [mBook setStopInit:YES];
     [self.navigationController setNavigationBarHidden:NO animated:TRUE];
     [self.navigationController setToolbarHidden:YES animated:TRUE];
-
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -257,13 +232,13 @@
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
 
     [leftBarButtonItem release];
-        
+    
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bookmark.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(doBookmark)];
     self.navigationItem.rightBarButtonItem = rightItem;
     [rightItem release];
     
     //为toolbar增加按钮
-    UIBarButtonItem *one = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"play-last.png"] style:UIBarButtonItemStylePlain target:self action:@selector(doPre)] autorelease];  
+    UIBarButtonItem *one = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"play-pre.png"] style:UIBarButtonItemStylePlain target:self action:@selector(doPre)] autorelease];  
     UIBarButtonItem *two = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"color.png"] style:UIBarButtonItemStylePlain target:self action:@selector(doFont)] autorelease];    
     UIBarButtonItem *three = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"light.png"] style:UIBarButtonItemStylePlain target:self action:@selector(doColor)] autorelease];
     UIBarButtonItem *four = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"play-next.png"] style:UIBarButtonItemStylePlain target:self action:@selector(doNext)] autorelease];
@@ -284,7 +259,7 @@
 	pageIndex = 1;
 	headView = nil;
     CGRect rect = [[UIScreen mainScreen] bounds];
-	bookLabel = [[PageView alloc] initWithFrame:CGRectMake(0, 0, rect.size.width, rect.size.height-40)];
+	bookLabel = [[PageView alloc] initWithFrame:CGRectMake(0, 0, rect.size.width, rect.size.height-20)];
 	[self.view addSubview:bookLabel];
     
 	mBook = [[KDBook alloc]initWithBook:bookIndex];
@@ -312,7 +287,8 @@
     pageNumberView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
     pageNumberView.layer.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.6f].CGColor;
     pageNumberView.layer.shadowPath = [UIBezierPath bezierPathWithRect:pageNumberView.bounds].CGPath;
-    pageNumberView.layer.shadowRadius = 2.0f; pageNumberView.layer.shadowOpacity = 1.0f;
+    pageNumberView.layer.shadowRadius = 2.0f;
+    pageNumberView.layer.shadowOpacity = 1.0f;
     
     CGRect textRect = CGRectInset(pageNumberView.bounds, 4.0f, 2.0f); // Inset the text a bit
     
@@ -334,7 +310,7 @@
     [self updatePageNumberText:1];
     pageNumberView.hidden = isNavHideflage;
 	
-	UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(10, rect.size.height-40, rect.size.width-20, 20)];
+	UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(10, rect.size.height-20, rect.size.width-20, 20)];
 	slider.maximumValue = rect.size.width-20;
 	slider.minimumValue = 1;
 	slider.value = 1;

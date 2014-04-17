@@ -7,16 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RJBookList.h"
+#import "RJBookData.h"
 
-@interface RJBookListViewController : UIViewController <UIScrollViewDelegate>
+@interface RJBookListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
-    RJBookList* listView;
-    UIPageControl* pageControl;
+    RJBookData* bookData;
+    NSArray * books ;
 }
-- (IBAction)changePage:(id)sender;
-- (IBAction)doComment:(id)sender;
-- (IBAction)doList:(id)sender;
-- (void) gotoPage:(int) pageNum;
+
+@property(nonatomic,retain) UITableView * tableView;
 
 @end

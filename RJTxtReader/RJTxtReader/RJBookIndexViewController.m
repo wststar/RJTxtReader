@@ -34,33 +34,42 @@
 
 -(void)indexOrbookmark:(id)sender
 {
+    
     [UIView beginAnimations:@"animation_indexOrbookmark" context:nil];
     [UIView setAnimationDuration:0.8f];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationRepeatAutoreverses:NO];
-    
-    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view cache:YES];
-
     if(isShowIndex)
     {
         isShowIndex = NO;
         [self.navigationItem.rightBarButtonItem setTitle:@"目录"];
         bookIndexTableView.hidden = YES;
         bookmarkTableView.hidden = NO;
-        
-    }
-    else {
+
+    }else {
         isShowIndex = YES;
         [self.navigationItem.rightBarButtonItem setTitle:@"书签"];
         bookIndexTableView.hidden = NO;
         bookmarkTableView.hidden = YES;
     }
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view cache:YES];
     [UIView commitAnimations];
+}
+
+/**
+ * 当用ios7的虚拟机显示的时候会出现UINavigationItem遮挡TableView的问题 
+ */
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        [self setEdgesForExtendedLayout:UIRectEdgeBottom];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     UINavigationBar *navBar = self.navigationController.navigationBar;
     navBar.barStyle = UIBarStyleDefault;
     [self.navigationController setNavigationBarHidden:NO animated:TRUE];
@@ -83,21 +92,22 @@
 
     
 	// Do any additional setup after loading the view.
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    bookIndexTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height-45)];
+    CGRect bounds = [self.view bounds];
+       bookIndexTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height)];
     [bookIndexTableView setDelegate:self];
     [bookIndexTableView setDataSource:self];
     bookIndexTableView.hidden = NO;
     [self.view addSubview:bookIndexTableView];
     [bookIndexTableView release];
     
-    bookmarkTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height-45)];
+    bookmarkTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height)];
     [bookmarkTableView setDelegate:self];
     [bookmarkTableView setDataSource:self];
     bookmarkTableView.hidden = YES;
 
     [self.view addSubview:bookmarkTableView];
     [bookmarkTableView release];
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -145,7 +155,7 @@
     {
         RJSingleBook* singleBook = [[RJBookData sharedRJBookData].books objectAtIndex:bookIndex];
         NSString *text = [[singleBook.pages objectAtIndex:indexPath.row] substringFromIndex:9];
-        cell.text = [text substringWithRange:NSMakeRange(0, text.length-4)];
+        cell.textLabel.text = [text substringWithRange:NSMakeRange(0, text.length-4)];
         if(chapterNum == indexPath.row )
         {
             [bookIndexTableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewRowAnimationNone];
@@ -164,7 +174,7 @@
             BookTimeArray = [NSMutableArray arrayWithContentsOfFile:[Path stringByAppendingPathComponent:[singleBook.name stringByAppendingString:@"_booktime.plist"]]];
         }
         NSString *text = [[ChatperArray objectAtIndex:indexPath.row] substringFromIndex:9];
-        cell.text = [text substringWithRange:NSMakeRange(0, text.length-4)];
+        cell.textLabel.text = [text substringWithRange:NSMakeRange(0, text.length-4)];
         
         NSString *booktime = @"书签时间：";
         NSString *detailText = [NSString stringWithFormat:@"第%@页  ",[PageNumArray objectAtIndex:indexPath.row]];
