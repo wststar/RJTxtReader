@@ -41,6 +41,7 @@
 {
     KDBooKViewController *bookVC = [[[KDBooKViewController alloc]init]autorelease];
 	bookVC.bookIndex = i;
+    //PageScrollViewController * bookVC = [[[PageScrollViewController alloc]init]autorelease];
 	[self.navigationController pushViewController:bookVC animated:YES];
 }
 

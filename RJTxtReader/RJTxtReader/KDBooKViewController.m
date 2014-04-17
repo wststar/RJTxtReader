@@ -320,6 +320,12 @@
 	[self.view addSubview:slider];
 	[slider release];
     
+    NSUInteger numberOfPages = 4;
+    self.viewControllerArray = [[NSMutableArray alloc] initWithCapacity:numberOfPages];
+    for (NSUInteger k = 0; k < numberOfPages; ++k)
+    {
+        [self.viewControllerArray addObject:[NSNull null]];
+    }
     [self performSelector:@selector(showPage) withObject:self afterDelay:0.25];
 }
 

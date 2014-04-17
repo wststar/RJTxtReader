@@ -24,6 +24,8 @@
     UILabel *pageNumberLabel;
 }
 
+@property (nonatomic, strong) NSMutableArray* viewControllerArray;
+
 @property (nonatomic, readwrite)NSUInteger bookIndex;
 
 -(void)back:(id)sender;
